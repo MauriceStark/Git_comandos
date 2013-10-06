@@ -2,7 +2,31 @@
 
 
 * [Comandos Git](#comandos-git)
-
+* [Añadir Archivos](#añadir-archivos)
+* [Stash](#stash)
+* [Logs](#logs)
+* [Repos Remotas](#repos-remotas)
+* [Tagging](#tagging)
+* [Branch](#branch)
+* [Branchs Remotas](#branchs-remotas)
+* [Tracking Branches](#tracking-branches)
+* [Rebase](#rebase)
+* [Servidor](#servidor)
+* [Buid Number](#generar-un-buid-number)
+* [Preparar un Release](#preparar-un-release)
+* [Chandelog](#chandelog)
+* [Alias](#alias)
+* [Recomendaciones](#recomendaciones)
+* [Contribuir a proyectos ajenos mediante Fork](#contribuir-a-proyectos-ajenos-mediante-fork)
+* [Reflog](#reflog)
+* [Utilidades](#utilidades)
+* [Depuracion](#depuracion)
+* [Submodulos](#submodulos)
+* [Configuracion](#configuracion)
+* [Git Atributes](#git-atributes)
+* [Git hooks](#git-hooks)
+* [Conceptos](#conceptos)
+* [Gitignore](#gitignore)
 
 ## Comandos Git
 
@@ -47,7 +71,7 @@ git reset HEAD [file]
 git checkout -- [file]
 >Descartar cambios en el directorio de trabajo.
 
-##AÑADIR ARCHIVOS
+## Añadir Archivos
 
 
 git add .
@@ -59,7 +83,7 @@ git add -i
 git add -p
 >Crea patch
 
-##STASH
+## Stash
 
 git stash
 >guarda el estado en una pila y limpia el directorio para poder cambiar de rama
@@ -73,7 +97,7 @@ git stash apply
 git stash pop
 > elimina el primero en la pila. O drop
 
-##LOGS
+## Logs
 
 git log -p -2
 > Muestra 2 últimos commits con diff
@@ -112,7 +136,7 @@ git log master…experiment
 
 
 
-##REMOTES
+## Repos Remotas
 
 git remote -v
 > lista los repos remotos
@@ -137,7 +161,7 @@ git remote rm [remote-name]
 > p.e si el contribuidor ya no contribuye más
 
 
-###TAGGING
+## Tagging
 Marcan puntos importantes en la histtoria del repo **RELEASES**
 
 git tag
@@ -194,7 +218,7 @@ git show [tag]
 >Devuelve más información sobre la etiqueta
 
 
-BRANCH
+## Branch
 > las ramas simplememte son punteros a distintos snapshots
 
 git branch [nombre-rama]
@@ -232,7 +256,7 @@ git branch --no-merged
 >lista ramas que no han sido incorporadas a la actual.
 
 
-REMOTE BRANCHES
+## Branchs Remotas
 
 git fetch origin
 > Descarga el contenido del servidor
@@ -260,7 +284,7 @@ git push [remotename] [localbranch]:[remotebranch]
 >La rama en el servidor tiene distinto nombre a la local
 
 
-##TRACKING BRANCHES
+## Tracking Branches
 
 git checkout --track origin/rama
 >Equivalente a -b rama_nueva origin/rama_nueva
@@ -268,7 +292,7 @@ git checkout --track origin/rama
 git chekout -b [nuevo_nombre] origin/[rama]
 > Establece un nombre distinto para la rama local
 
-##REBASE
+## Rebase
 
 Rebase y merge se diferencian en que merge mezcla dos puntos finales de dos snapshots y rebase aplica cada uno de los cambios a la rama en la que se hace el rebase. No lo uses en repos publicos con mas colaboradores, porque todos los demas tendrán que hacer re-merges
 
@@ -302,17 +326,17 @@ git rebase [basebranch] [topicbranch]
 git rebase -i
 > Rebase interactivo
 
-##SERVIDOR
+## Servidor
 
 git instaweb
 > Muestra una interfaz web con los commits
 
-##GENERAR UN NÚMERO DE COMPILACIÓN (BUILD NUMBER)
+## Generar un Build Number
 
 git describe master
 >Solo funciona para tags creadas con -s ó -a
 
-##PREPARAR UNA RELEASE
+## Preparar un Release
 
 git archive master -- prefix=”project/’ | gzip ] "git describe master".tar.gz
 
@@ -321,12 +345,25 @@ git archive master -- prefix=”project/’ --format=zip | "git describe master"
 test/ export-ignore
 >Al crear el tarball no incluye el directorio test/
 
-##GENERAR UN CHANGELOG
+## Chandelog
 
 git shortlog --no-merges master --not [tag]
 >Recopila todos los commits desde [tag] y los agrupa por autor
 
-##RECOMENDACIONES
+## Alias
+Si no quieres escribir el texto entero de cada uno de los comandos de Git, puedes establecer fácilmente un alias para cada comando usando git config. Aquí hay un par de ejemplos que tal vez quieras establecer:
+
+* git config --global alias.co checkout
+* git config --global alias.br branch
+* git config --global alias.ci commit
+* git config --global alias.st status
+
+Tambien puedes crear comandos para facilitar el uso de git:
+
+git config --global alias.lg "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr %an)%Creset' --abbrev-commit --date=relative"
+>Crea un alias llamado **git lg** que muestra los logs de una manera mas compacta y comoda
+
+## Recommendaciones
 
 Siempre hay que hacer pull antes de push en caso de que alguien haya subido cambios al servidor. Ejemplo:
 
@@ -358,7 +395,7 @@ git add --patch
 
 El mensaje del commit debe tener la estructura siguiente: Una linea de no más de 50 caracteres, seguida de otra línea en blanco seguida de una descripción completa del commit.
 
-##PASOS A SEGUIR PARA CONTRIBUIR A PROYECYOS AJENOS, MEDIANTE FORK
+## Contribuir a proyectos ajenos mediante Fork
 * git clone [url]
 * git checkout -b featureA
 * git commit
@@ -388,7 +425,7 @@ Otro ejemplo, el propietario del proyecto quiere aceptar un pull tuyo, pero quie
 
 **--squash** coge todo el trabajo de la rama mezclada y la aplasta en un no-merge commit encima de la rama en la que estas. **--no-commit** no registra el commit automaticamente. Así puedes realizar todos los cambios necesarios y luego hacer el commit
 
-##REFLOG
+## Reflog
 
 En segundo plano, git crea un log de a donde han estado referenciando HEAD y el resto de ramas en los últimos meses.
 
@@ -405,7 +442,8 @@ git show master@{yesterday}
 
 
 
-##UTILIDADES
+## Utilidades
+
 git show [short-SHA-1]
 >Es posible ver un commit pasando la versión abreviada del SHA-1
 
@@ -424,7 +462,7 @@ git show HEAD~2
 git filter-branch --tree-filter ‘rm -f "[file]" HEAD
 >elimina el archivo de todos los commits
 
-##DEPURACIÓN
+## Depuracion
 
 **File anotation**
 
@@ -446,7 +484,7 @@ git filter-branch --tree-filter ‘rm -f "[file]" HEAD
 * Ahora irá preguntando hasta que encuentres el commit culpable. Si esta bien indicas git bisect good. De lo contrario git bisect bad. Al terminar hay que resetear.
 * git bisect reset
 
-##SUBMODULOS
+## Submodulos
 
 git submodule add [url] [/ruta]
 > crea un directorio que contiene el comtenido de otro proyecto.
@@ -458,7 +496,7 @@ git submodule update
 
 
 
-##CONFIGURATION
+## Configuracion
 
 git config --global [opcion] [valor]
 >global para usuario, system todos y sin nada, especifico para el repo.
@@ -500,7 +538,7 @@ espacios al inicio de tabulación, busca líneas con 8 o más espacios en lugar 
 git apply --whitespace=warn [patch]
 > advierte de errores de espacios antes de aplicar el patch. Con --whitespace=fix intenta arreglarlos
 
-##GIT ATTRIBUTES
+## Git Atributes
 
 Archivo en **.gitattributes** en el directorio de trabajo o en **.git/info/attributes** para no commitearlo
 
@@ -562,27 +600,14 @@ git checkout date_test.txt
 cat date_test.txt
 $Date: Tue Apr 21 07:26:52 2009 -0700$
 
-##GIT HOOKS
+## Git hooks
 Hay dos tipos, de lado cliente y servidor, se guardan en el directorio .git/hooks. Para activarlos basta con que sean ejecutables.
 
-##Alias
-Si no quieres escribir el texto entero de cada uno de los comandos de Git, puedes establecer fácilmente un alias para cada comando usando git config. Aquí hay un par de ejemplos que tal vez quieras establecer:
-
-* git config --global alias.co checkout
-* git config --global alias.br branch
-* git config --global alias.ci commit
-* git config --global alias.st status
-
-Tambien puedes crear comandos para facilitar el uso de git:
-
-git config --global alias.lg "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr %an)%Creset' --abbrev-commit --date=relative"
->Crea un alias llamado **git lg** que muestra los logs de una manera mas compacta y comoda
-
-##CONCEPTOS
+## Conceptos
 
 **Fast forward:** cuando se hace un merge y el commit de la rama a mezclar esta justo un commit adelantado, simplemente se hace apuntar la rama en la que se iba a mezclar al commit del merge.
 
-##GITIGNORE:
+## Gitignore
 
 *.a
 > no .a files
