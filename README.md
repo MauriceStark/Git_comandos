@@ -522,10 +522,13 @@ git config --global filter.indent.smudge cat
 Otro ejemplo interesante es la expansión de la palabra clave **$Date$**. Para ello hay que escribir un script en ruby que recibe un archivo, encuentra la fecha de su último commit e inserta dicha fecha en el archivo:
 
 ```ruby
->! /usr/bin/env ruby[/em]
-data = STDIN.read[/em]
-last_date = `git log &>45;&>45;pretty=format:"%ad" &>45;1`
+
+>! /usr/bin/env ruby</em>
+data = STDIN.read</em>
+last_date = 'git log &>45;&>45;pretty=format:"%ad" &>45;1'
 puts data.gsub('$Date$', '$Date: ' + last_date.to_s + '$')
+
+```
 
 Puedes nombrar este script como **expand_date**. Crea un filtro en git, llamado dater y dile que use el script anterior:
 
