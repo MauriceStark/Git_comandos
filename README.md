@@ -290,7 +290,7 @@ git rebase -i
 
 ##SERVIDOR
 
-git instawew
+git instaweb
 > Muestra una interfaz web con los commits
 
 ##GENERAR UN NÚMERO DE COMPILACIÓN (BUILD NUMBER)
@@ -316,131 +316,202 @@ git shortlog --no-merges master --not [tag]
 
 Siempre hay que hacer pull antes de push en caso de que alguien haya subido cambios al servidor. Ejemplo:
 
-User1 clona el repo y hace cambios, realiza un commit
-
-User2 clona el repo, hace cambios, hace commit y sube los cambios con push
-User1 intenta hacer push, pero será rechazado con: ! [rejected] master -] master (non-fast forward). No puede subir los cambios hasta que no mezcle el
+* User1 clona el repo y hace cambios, realiza un commit
+* User2 clona el repo, hace cambios, hace commit y sube los cambios con push
+* User1 intenta hacer push, pero será rechazado con: ! [rejected] master -] master (non-fast forward). No puede subir los cambios hasta que no mezcle el
 trabajo que ha subido User2. Así que debe hacer lo siguiente:
-git fetch origin
-git merge origin/master
-git push origin master
+ * git fetch origin
+ * git merge origin/master
+ * git push origin master
 
 Mientras User1 hacía estas operaciones, User2 ha creado una rama issue54 y realizado 3 commits, sin haber descargado los cambios de User1. Para sincronizar el trabajo, User2 debe hacer:
-git fetch origin
-git log --no-merges origin/master ^issue54 >Observa qué cambios ha hecho User1
-git checkout master
+
+* git fetch origin
+* git log --no-merges origin/master ^issue54
+>Observa qué cambios ha hecho User1
+
+* git checkout master
 git merge issue54 && git merge origin/master
 git push origin master
-git diff --check >Antes de hacer commit, ejecutar esto para ver si hemos añadido demasiados espacios que puedan causar problemas a los demás.
+
+git diff --check
+>Antes de hacer commit, ejecutar esto para ver si hemos añadido demasiados espacios que puedan causar problemas a los demás.
+
 Commits pequeños que se centren en resolver un problema, no commits con grandes cambios.
-git add --patch >En caso de hacer varios cambios en el mismo archivo
+
+git add --patch
+>En caso de hacer varios cambios en el mismo archivo
+
 El mensaje del commit debe tener la estructura siguiente: Una linea de no más de 50 caracteres, seguida de otra línea en blanco seguida de una descripción completa del commit.
-PASOS A SEGUIR PARA CONTRIBUIR A PROYECYOS AJENOS, MEDIANTE FORK
-git clone [url]
-git checkout -b featureA
-git commit
-git remote add myFork [url]
-git push myFork featureA
-git request-pull origin/master myFork >enviar la salida por mail al propietario del proyecto, o hacer click en pull request.
+
+##PASOS A SEGUIR PARA CONTRIBUIR A PROYECYOS AJENOS, MEDIANTE FORK
+* git clone [url]
+* git checkout -b featureA
+* git commit
+* git remote add myFork [url]
+* git push myFork featureA
+* git request-pull origin/master myFork
+>Enviar la salida por mail al propietario del proyecto, o hacer click en pull request.
+
 Buena practica tener siempre una rama master que apunte a origin/master, para estar siempre actualizado con los ultimos cambios en el proyecto original.
->Separar cada trabajo realizado en topic branch, que trackeen a origin/master
-git checkout -b featureB origin/master
-(Hacer cambios)
-git commit
-git push myFork featureB
-(Contactar con el propietario del proyecto)
-git fetch origin
 
->Otro ejemplo, el propietario del proyecto quiere aceptar un pull tuyo, pero quiere que hagas algunos cambios, aprovechas la oportunidad y mueves tu trabajo para basarlo en el contenido actual de la rama origin/master, aplastas los cambios en featureB, resuelves conflictos, y haces push:
-git checkout -b featureBv2 origin/master
-git merge --no-commit --squash featureB
-(cambiar la implementacion)
-git commit
-git push myFork featureBv2
+Separar cada trabajo realizado en topic branch, que trackeen a origin/master
 
->--squash coge todo el trabajo de la rama mezclada y la aplasta en un no-merge commit encima de la rama en la que estas. --no-commit no registra el commit automaticamente. Así puedes realizar todos los cambios necesarios y luego hacer el commit
+* git checkout -b featureB origin/master
+* (Hacer cambios)
+* git commit
+* git push myFork featureB
+* (Contactar con el propietario del proyecto)
+* git fetch origin
 
-REFLOG
+Otro ejemplo, el propietario del proyecto quiere aceptar un pull tuyo, pero quiere que hagas algunos cambios, aprovechas la oportunidad y mueves tu trabajo para basarlo en el contenido actual de la rama origin/master, aplastas los cambios en featureB, resuelves conflictos, y haces push:
+
+* git checkout -b featureBv2 origin/master
+* git merge --no-commit --squash featureB
+* (cambiar la implementacion)
+* git commit
+* git push myFork featureBv2
+
+**--squash** coge todo el trabajo de la rama mezclada y la aplasta en un no-merge commit encima de la rama en la que estas. **--no-commit** no registra el commit automaticamente. Así puedes realizar todos los cambios necesarios y luego hacer el commit
+
+##REFLOG
 
 En segundo plano, git crea un log de a donde han estado referenciando HEAD y el resto de ramas en los últimos meses.
+
 git reflog
-git show HEAD@{n} >Muestra información sobre el reflog número n
-git log -g master >Muestra el log formateado como la salida de reflog
-git show master@{yesterday} >Muestra los commits de ayer.
+
+git show HEAD@{n}
+>Muestra información sobre el reflog número n
+
+git log -g master
+>Muestra el log formateado como la salida de reflog
+
+git show master@{yesterday}
+>Muestra los commits de ayer.
 
 
 
-UTILIDADES
-git show [short-SHA-1] >Es posible ver un commit pasando la versión abreviada del SHA-1
-git rev-parse [branch] >A qué SHA-1 apunta una rama
-git show HEAD^ > Muestra commit padre
-git show HEAD^2 >Muestra segundo padre
-git show HEAD~2 > El primer padre del primer padre
-git filter-branch --tree-filter ‘rm -f [file]’ HEAD >elimina el archivo de todos los commits
+##UTILIDADES
+git show [short-SHA-1]
+>Es posible ver un commit pasando la versión abreviada del SHA-1
 
-DEPURACIÓN
-File anotation
-git blame -L 12,22 [archivo] > muestra cuando y por quién se modificaron de la linea 12 a la 22
-git blame -C -L 141,153 [file] > cuando renombras un archivo o lo refactorizas en varios, muestra de donde vino originalmente.
-Búsqueda Binaria: Cuando hay un bug que no puedes localizar, usas bisect para dererminar en qué commit empezó a producirse el bug.
-git bisect start
-git bisect bad > marcas el commit actual como roto
-git bisect good [commit bueno] > último commit conocido que funcionaba
-Ahora irá preguntando hasta que encuentres el commit culpable. Si esta bien indicas git bisect good. De lo contrario git bisect bad. Al terminar hay que resetear.
-git bisect reset
+git rev-parse [branch]
+>A qué SHA-1 apunta una rama
 
-SUBMODULOS
+git show HEAD^
+> Muestra commit padre
 
-git submodule add [url] > crea un directorio que contiene el comtenido de otro proyecto.
+git show HEAD^2
+>Muestra segundo padre
 
-Clonar un repo con submodulos
-git clone url
+git show HEAD~2
+> El primer padre del primer padre
+
+git filter-branch --tree-filter ‘rm -f "[file]" HEAD
+>elimina el archivo de todos los commits
+
+##DEPURACIÓN
+
+**File anotation**
+
+* git blame -L 12,22 [archivo]
+> Muestra cuando y por quién se modificaron de la linea 12 a la 22
+
+* git blame -C -L 141,153 [file]
+> Cuando renombras un archivo o lo refactorizas en varios, muestra de donde vino originalmente.
+
+* **Búsqueda Binaria:** Cuando hay un bug que no puedes localizar, usas bisect para dererminar en qué commit empezó a producirse el bug.
+
+* git bisect start
+* git bisect bad
+> marcas el commit actual como roto
+
+* git bisect good [commit bueno]
+> último commit conocido que funcionaba
+
+* Ahora irá preguntando hasta que encuentres el commit culpable. Si esta bien indicas git bisect good. De lo contrario git bisect bad. Al terminar hay que resetear.
+* git bisect reset
+
+##SUBMODULOS
+
+git submodule add [url] [/ruta]
+> crea un directorio que contiene el comtenido de otro proyecto.
+
 git submodule init
+
 git submodule update
+> Baja todos los archivos del submodulo.
 
 
 
+##CONFIGURATION
 
-CONFIGURATION
+git config --global [opcion] [valor]
+>global para usuario, system todos y sin nada, especifico para el repo.
 
+git config {key}
+> muestra el valor de key
 
+git config --global core.editor [editor]
+>cambia el editor por defecto
 
-git config --global [opcion] [valor] >global para usuario, system todos y sin nada, especifico para el repo.
-git config {key} > muestra el valor de key
-git config --global core.editor [editor] >cambia el editor por defecto
-git config --global commit.template $HOME/.gitmessage.txt >plantilla para commits
-git config --global core.pager ‘more|less’ >paginador por defecto, puedes usar cualquiera
-git config --global user.signingkey [gpg-key-id] > clave gpg para firmar tags
-git config --global core.excludesfile [file] >como gitignore
-git config --global help.autocorrect 1 > autocorrige cuando se escribe un comando incorrecto. Solo en git ]= 1.6.1
-git config --global color.ui true > colorea la salida de git. Valores: true|false|always
-git config --global core.autocrlf input >para que usuarios linux no tengan problemas con los retornos de carro de windows
-git config --global core.autocrlf true >para usuarios de windows
-git config --global core.whitespace trailing-space, space-before-tab, indent-with-non-tab, cr-at-eol > respectivamente: busca espacios al final de línea, busca espacios al inicio de tabulación, busca líneas con 8 o más espacios en lugar de tabulaciones, acepta retornos de carro
-git apply --whitespace=warn [patch] > advierte de errores de espacios antes de aplicar el patch. Con --whitespace=fix intenta arreglarlos
+git config --global commit.template $HOME/.gitmessage.txt
+>plantilla para commits
 
+git config --global core.pager ‘more|less’
+>paginador por defecto, puedes usar cualquiera
 
+git config --global user.signingkey [gpg-key-id]
+> clave gpg para firmar tags
 
-GIT ATTRIBUTES
-Archivo en .gitattributes en el directorio de trabajo o en .git/info/attributes para no committearlo
+git config --global core.excludesfile [file]
+>como gitignore
 
-Identificando archivos binarios
+git config --global help.autocorrect 1
+> autocorrige cuando se escribe un comando incorrecto. Solo en git ]= 1.6.1
+
+git config --global color.ui true
+> colorea la salida de git. Valores: true|false|always
+
+git config --global core.autocrlf input
+>para que usuarios linux no tengan problemas con los retornos de carro de windows
+
+git config --global core.autocrlf true
+>para usuarios de windows
+
+git config --global core.whitespace trailing-space, space-before-tab, indent-with-non-tab, cr-at-eol
+> respectivamente: busca espacios al final de línea, busca
+espacios al inicio de tabulación, busca líneas con 8 o más espacios en lugar de tabulaciones, acepta retornos de carro
+
+git apply --whitespace=warn [patch]
+> advierte de errores de espacios antes de aplicar el patch. Con --whitespace=fix intenta arreglarlos
+
+##GIT ATTRIBUTES
+
+Archivo en **.gitattributes** en el directorio de trabajo o en **.git/info/attributes** para no commitearlo
+
+**Identificando archivos binarios**
+
 Muchos archivos son para uso local y no aportan información al repositorio. Para decirle a git qué archivos son binarios hacer añadir al archivo atributes:
-[nombre archivo o regexp] -crlf -diff > git no intentará corregir problemas de crlf ni mostrará los cambios con diff. En versiones ]= 1.6 se pueden sustituir estos dos valores por la macro binary
 
-Diffing binary files
+[nombre archivo o regexp] -crlf -diff
+>git no intentará corregir problemas de crlf ni mostrará los cambios con diff. En versiones ]= 1.6 se pueden sustituir estos dos valores por la macro binary
+
+**Diffing binary files**
+
 En ocasiones es útil mostrar diffs de archivos binarios, como una archivo de word:
+
 *.doc diff=word
 >tras esto hay que definir el filtro word para que git convierta archivos word a texto:
 git config diff.word.textconv strings
 
 Es posible hacer lo mismo para imágenes jpeg, es necesario instalar exiftool para extraer los metadatos y luego hacer:
-echo ‘*.jpeg diff=exif’ ]] .gitattributes
+
+echo "*.jpeg diff=exif" >> .gitattributes
+
 git config diff.exif.textconv exiftool
 
-
-
-Procesar archivos antes de hacer commit y antes de hacer checkout: Es posible crear tus propios filtros para hacer sustitución. Estos filtros se llaman smudge y clean. Los puedes configurar para distintos directorios y luego escribir un script que procesará cada archivo antes de que sea checkeado (smudge) y commiteado (clean). Para ello,escribe en el .gitattributes: (En caso que quieras procesar código C)
+**Procesar archivos antes de hacer commit y antes de hacer checkout:** Es posible crear tus propios filtros para hacer sustitución. Estos filtros se llaman smudge y clean. Los puedes configurar para distintos directorios y luego escribir un script que procesará cada archivo antes de que sea checkeado (smudge) y commiteado (clean). Para ello,escribe en el .gitattributes: (En caso que quieras procesar código C)
 
 *.c filter=indent Luego:
 
@@ -448,16 +519,19 @@ git config --global filter.indent.clean indent
 
 git config --global filter.indent.smudge cat
 
-Otro ejemplo interesante es la expansión de la palabra clave $Date$. Para ello hay que escribir un script en ruby que recibe un archivo, encuentra la fecha de su último commit e inserta dicha fecha en el archivo:
+Otro ejemplo interesante es la expansión de la palabra clave **$Date$**. Para ello hay que escribir un script en ruby que recibe un archivo, encuentra la fecha de su último commit e inserta dicha fecha en el archivo:
 
+```ruby
 >! /usr/bin/env ruby[/em]
 data = STDIN.read[/em]
 last_date = `git log &>45;&>45;pretty=format:"%ad" &>45;1`
 puts data.gsub('$Date$', '$Date: ' + last_date.to_s + '$')
 
-Puedes nombrar este script como expand_date. Crea un filtro en git, llamado dater y dile que use el script anterior:
+Puedes nombrar este script como **expand_date**. Crea un filtro en git, llamado dater y dile que use el script anterior:
+
 git config filter.dater.smudge expand_date
-git config filter.dater.clean ‘perl -pe “s/\\\$Date[^\\\$]*\\\$/\\\$Date\\\$/”‘
+
+git config filter.dater.clean 'perl -pe "s/\\\$Date[^\\\$]*\\\$/\\\$Date\\\$/"'
 
 Para usar el filtro, simplemente escribe la palabra clave en los archivos que desees:
 
@@ -465,7 +539,7 @@ echo ‘> $Date$’ ] date_test.txt
 echo ‘date*.txt filter=dater’ ]] .gitattributes
 
 git add date_test.txt .gitattributes
-git commit -m “Testing date expansion in Git”
+git commit -m "Testing date expansion in Git"
 rm date_test.txt
 git checkout date_test.txt
 cat date_test.txt
@@ -475,15 +549,27 @@ $Date: Tue Apr 21 07:26:52 2009 -0700$
 Hay dos tipos, de lado cliente y servidor, se guardan en el directorio .git/hooks. Para activarlos basta con que sean ejecutables.
 
 ##CONCEPTOS
-Fast forward: cuando se hace un merge y el commit de la rama a mezclar esta justo un commit adelantado, simplemente se hace apuntar la rama en la que se iba a mezclar al commit del merge.
 
-GITIGNORE:
-> a comment - this is ignored
-*.a > no .a files
-!lib.a > but do track lib.a, even though you’re ignoring .a files above
-/TODO > only ignore the root TODO file, not subdir/TODO
-build/ > ignore all files in the build/ directory
-doc/*.txt > ignore doc/notes.txt, but not doc/server/arch.txt
+**Fast forward:** cuando se hace un merge y el commit de la rama a mezclar esta justo un commit adelantado, simplemente se hace apuntar la rama en la que se iba a mezclar al commit del merge.
+
+##GITIGNORE:
+
+# a comment - this is ignored
+
+*.a
+> no .a files
+
+!lib.a
+> but do track lib.a, even though you’re ignoring .a files above
+
+/TODO
+> only ignore the root TODO file, not subdir/TODO
+
+build/
+> ignore all files in the build/ directory
+
+doc/*.txt
+> ignore doc/notes.txt, but not doc/server/arch.txt
 
 ##Derechos de autor y licencia
 Obra Derivada de [Mini tutorial y chuleta de comandos git.]( http://elbauldelprogramador.com/articulos/mini-tutorial-y-chuleta-de-comandos-git/)
@@ -493,7 +579,4 @@ El Baúl del Programador by Alejandro Alcalde is licensed under a [Creative Comm
 
 2013  [@MauriceStark](https://github.com/MauriceStark)
 
-```javascript
-var foo = {};
-foo.bar = 'hello';
 
