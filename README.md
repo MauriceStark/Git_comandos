@@ -15,7 +15,7 @@ git diff --staged
 git commit -v
 >muestra el diff en el editor
 
-git commit -a -m
+git commit -a -m "mensaje"
 >automatically stage tracked files. No hace falta git add
 
 git rm --cached [file or regexp]
@@ -43,11 +43,15 @@ git checkout -- [file]
 
 ##AÑADIR ARCHIVOS
 
+
+git add .
+>Agrega todos los archivos
+
 git add -i
->interactive staggin
+>Interactive staggin
 
 git add -p
->crea patch
+>Crea patch
 
 ##STASH
 
@@ -128,7 +132,7 @@ git remote rm [remote-name]
 
 
 ###TAGGING
-Marcan puntos importantes en la histtoria del repo ( releases )
+Marcan puntos importantes en la histtoria del repo **RELEASES**
 
 git tag
 > muestra las etiquetas actuales
@@ -145,13 +149,17 @@ git tag -l ‘v1.4.2.*’
 git tag -a [tagname] -m "mensaje"
 > annotated tag
 
-git show [tag-name] > muestra información asociada.
+git show [tag-name]
+> muestra información asociada.
 
-git tag -s [tag-name] -m ‘message’ > la firma con gpg
+git tag -s [tag-name] -m ‘message’
+> la firma con gpg
 
-git tag [tag-name] > lightweight tag
+git tag [tag-name]
+> lightweight tag
 
-git tag -v [tag-name] > verifica tags firmadas
+git tag -v [tag-name]
+> verifica tags firmadas
 
 git tag -a [tag-name] [commit-chksum]
 > crea tag para commit con dicho chksum, Por defecto no se transfieren los tags, para subirlos al servidor:
