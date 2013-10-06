@@ -361,7 +361,7 @@ doc/*.txt > ignore doc/notes.txt, but not doc/server/arch.txt
 
 Derechos de autor y licencia
 
-Copyright (c) 2013 @MauriceStark
+Copyright (c) 2013  [@MauriceStark](https://github.com/MauriceStark)
 
 Se autoriza por la presente, de forma gratuita, a cualquier
 persona que haya obtenido una copia de este software y
