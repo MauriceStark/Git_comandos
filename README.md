@@ -1,4 +1,4 @@
-Guia de comandos Git
+#Guia de comandos Git
 ---
 git help [command]
 >Muestra informacion detallada sobre el comando.
@@ -39,19 +39,30 @@ git reset HEAD [file]
 > to unstage
 
 git checkout -- [file]
-> Descartar cambios en el directorio de trabajo.
+>Descartar cambios en el directorio de trabajo.
 
-AÑADIR ARCHIVOS
+##AÑADIR ARCHIVOS
+---
 
-git add -i >interactive staggin
-git add -p >crea patch
+git add -i
+>interactive staggin
 
-STASH
+git add -p
+>crea patch
 
-git stash >guarda el estado en una pila y limpia el directorio para poder cambiar de rama
-git stash list >muestra la pila
-git stash apply > vuelve al estado original del dir. Stash{n} especifica uno concreto Y --index reaplica los cambios stagged
-git stash pop > elimina el primero en la pila. O drop
+##STASH
+---
+git stash
+>guarda el estado en una pila y limpia el directorio para poder cambiar de rama
+
+git stash list
+>muestra la pila
+
+git stash apply
+> vuelve al estado original del dir. Stash{n} especifica uno concreto Y --index reaplica los cambios stagged
+
+git stash pop
+> elimina el primero en la pila. O drop
 
 LOGS
 
