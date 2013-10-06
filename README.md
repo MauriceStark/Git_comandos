@@ -3,8 +3,8 @@ Guia de comandos Git
 git help [command]
 >Muestra informacion detallada sobre el comando.
 
-git clone [uri] namedir
->clona usando como nombre de directorio namedir.
+git clone [url] [directorio]
+>clona usando como nombre del directorio.
 
 git add  [dir]
 >añade recursivamente todos los archivos del dir.
@@ -551,13 +551,24 @@ $Date: Tue Apr 21 07:26:52 2009 -0700$
 ##GIT HOOKS
 Hay dos tipos, de lado cliente y servidor, se guardan en el directorio .git/hooks. Para activarlos basta con que sean ejecutables.
 
+##Alias
+Si no quieres escribir el texto entero de cada uno de los comandos de Git, puedes establecer fácilmente un alias para cada comando usando git config. Aquí hay un par de ejemplos que tal vez quieras establecer:
+
+* git config --global alias.co checkout
+* git config --global alias.br branch
+* git config --global alias.ci commit
+* git config --global alias.st status
+
+Tambien puedes crear comandos para facilitar el uso de git:
+
+git config --global alias.lg "log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr %an)%Creset' --abbrev-commit --date=relative"
+>Crea un alias llamado **git lg** que muestra los logs de una manera mas compacta y comoda
+
 ##CONCEPTOS
 
 **Fast forward:** cuando se hace un merge y el commit de la rama a mezclar esta justo un commit adelantado, simplemente se hace apuntar la rama en la que se iba a mezclar al commit del merge.
 
 ##GITIGNORE:
-
-# a comment - this is ignored
 
 *.a
 > no .a files
