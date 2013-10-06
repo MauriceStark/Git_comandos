@@ -1,5 +1,11 @@
-Guia de comandos Git
----
+#Guia de comandos Git
+
+
+* [Comandos Git](#Comandos-Git)
+
+
+##Comandos Git
+
 git help [command]
 >Muestra informacion detallada sobre el comando.
 
