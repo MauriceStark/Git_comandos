@@ -1,4 +1,4 @@
-#Guia de comandos Git
+Guia de comandos Git
 ---
 git help [command]
 >Muestra informacion detallada sobre el comando.
@@ -42,7 +42,6 @@ git checkout -- [file]
 >Descartar cambios en el directorio de trabajo.
 
 ##AÑADIR ARCHIVOS
----
 
 git add -i
 >interactive staggin
@@ -51,7 +50,7 @@ git add -p
 >crea patch
 
 ##STASH
----
+
 git stash
 >guarda el estado en una pila y limpia el directorio para poder cambiar de rama
 
@@ -65,136 +64,263 @@ git stash pop
 > elimina el primero en la pila. O drop
 
 ##LOGS
----
 
-git log -p -2 > Muestra 2 últimos commits con diff
+git log -p -2
+> Muestra 2 últimos commits con diff
+
 git log --stat
+
 git log --pretty
+
 git log --pretty=format:”%h - %an, %ar : %s”
+
 git log --pretty=format;”%h %s” --graph
+
 git log --since=2.weeks
+
 git log [branch] --not master >Muestra commit de [branch] sin incluir los de master
+
 git log --abbrev-commit --pretty=oneline
-git diff master…contrib >Muestra solo el trabajo que la rama contrib actual ha introducido desde su antecesor común con master
-git log [branch1]..[branch2] >Commits de branch2 que no están en branch1
-git log origin/master..master >Muestra qué commits se van a enviar al servidor
-git log origin/master.. >Igual que el anterior. Se asume master o HEAD
-git log refA refB --not refC > commits en refA y refB que no están en refC
-git log master…experiment >commits de master o experiment, pero sin ser comunes. Con --left-right indica a qué rama pertenece cada uno
+
+git diff master…contrib
+>Muestra solo el trabajo que la rama contrib actual ha introducido desde su antecesor común con master
+
+git log [branch1]..[branch2]
+>Commits de branch2 que no están en branch1
+
+git log origin/master..master
+>Muestra qué commits se van a enviar al servidor
+
+git log origin/master..
+>Igual que el anterior. Se asume master o HEAD
+
+git log refA refB --not refC
+> commits en refA y refB que no están en refC
+
+git log master…experiment
+>commits de master o experiment, pero sin ser comunes. Con --left-right indica a qué rama pertenece cada uno
 
 
 
-REMOTES > repos en internet
+##REMOTES
 
-git remote -v > lista los repos remotos
-git remote add [shortname] [url] > crea nuevo remote, es posible descargar el contenido de ese repo con git fetch [shortname]. Master branch en [shortcode]/master
-git fetch [remote] > descarga trabajo nuevo a máquina local, no sobreescribe nada tuyo. ( git pull sí hace merge automaticamente si se esta realizando un seguimiento de esa branch)
-git push [remote-name] [branch-name] > sii nadie ha hecho push antes
-git remote show [remote-name] > inspecciona remote.
-git remote rename [old-name] [new-name] > también renombra branches: quedaría [new-name]/master
-git remote rm [remote-name] > p.e si el contribuidor ya no contribuye más
+git remote -v
+> lista los repos remotos
+
+git remote add [shortname] [url]
+> crea nuevo remote, es posible descargar el contenido de ese repo con git fetch [shortname]. Master branch en [shortcode]/master
+
+git fetch [remote]
+> descarga trabajo nuevo a máquina local, no sobreescribe nada tuyo. ( git pull sí hace merge automaticamente si se esta realizando un
+seguimiento de esa branch)
+
+git push [remote-name] [branch-name]
+> si nadie ha hecho push antes
+
+git remote show [remote-name]
+> inspecciona remote.
+
+git remote rename [old-name] [new-name]
+> también renombra branches: quedaría [new-name]/master
+
+git remote rm [remote-name]
+> p.e si el contribuidor ya no contribuye más
 
 
-TAGGING
-> marcan puntos importantes en la histtoria del repo ( releases )
+###TAGGING
+Marcan puntos importantes en la histtoria del repo ( releases )
 
-git tag > muestra las etiquetas actuales
-git tag -l ‘v1.4.2.*’ > acepta regex
-Dos tipos de tag:
-Lightweight : puntero a commit ( branch que no cambia )
-Annotated : se almacenan como objetos en la db, con checksum, nombre del creador, email, fecha, mensaje, posibilidad de firmarla con GPG. ( recomendada )
-git tag -a [tagname] -m ‘mensaje’ > annotated tag
+git tag
+> muestra las etiquetas actuales
+
+git tag -l ‘v1.4.2.*’
+> acepta regex
+
+**Dos tipos de tag:**
+
+* **Lightweight :** puntero a commit ( branch que no cambia )
+
+* **Annotated :** se almacenan como objetos en la db, con checksum, nombre del creador, email, fecha, mensaje, posibilidad de firmarla con GPG. ( recomendada )
+
+git tag -a [tagname] -m "mensaje"
+> annotated tag
+
 git show [tag-name] > muestra información asociada.
+
 git tag -s [tag-name] -m ‘message’ > la firma con gpg
+
 git tag [tag-name] > lightweight tag
+
 git tag -v [tag-name] > verifica tags firmadas
-git tag -a [tag-name] [commit-chksum] > crea tag para commit con dicho chksum
-Por defecto no se transfieren los tags, para subirlos al servidor:
-git push origin [tag-name] > una sola
-git push origin --tags > Enviar todas
-Para usar GPG y firmar tags, hay que subir la clave pública al repositorio:
-gpg --list-keys >Coges la id pública
-gpg -a --export [id] | git hash-object -w --stdin >Copia el SHA-1 devuelto
+
+git tag -a [tag-name] [commit-chksum]
+> crea tag para commit con dicho chksum, Por defecto no se transfieren los tags, para subirlos al servidor:
+
+git push origin [tag-name]
+> una sola
+
+git push origin --tags
+> Enviar todas Para usar GPG y firmar tags, hay que subir la clave pública al repositorio:
+
+gpg --list-keys
+>Coges la id pública
+
+gpg -a --export [id] | git hash-object -w --stdin
+>Copia el SHA-1 devuelto
+
 git tag -a maintainer-gpg-pub [SHA-1]
-git push --tags >Comparte la clave con todos los usuarios
-git show maintainer-gpg-pub | gpg --import >Cada usuario importa la clave así
-git show [tag] >Devuelve más información sobre la etiqueta
+
+git push --tags
+>Comparte la clave con todos los usuarios
+
+git show maintainer-gpg-pub | gpg --import
+>Cada usuario importa la clave así
+
+git show [tag]
+>Devuelve más información sobre la etiqueta
 
 
 BRANCH
 > las ramas simplememte son punteros a distintos snapshots
 
-git branch [nombre-rama] >crea rama. Puntero al commit actual
-git checkout [nombre-rama] >cambiar a la rama especificada.
-git checkout -b [nombre-rama] >crea y cambia de rama
-git merge [rama] > Mezcla la rama actual con [rama]
-git branch -d [rama] >elimina la rama
-git push origin --delete [branchName] > Elimina una rama del servidor
-git mergetool >Herramienta gráfica para resolver conflictos
-git branch > lista ramas
-git branch -v > lista ramas mostrando último commit
-git branch --merged >lista ramas que han sido mezcladas con la actual. Si no tienen un *, pueden borrarse, ya que significa que se han incorporado los cambios en la rama actual.
-git branch --no-merged >lista ramas que no han sido incorporadas a la actual.
+git branch [nombre-rama]
+>crea rama. Puntero al commit actual
+
+git checkout [nombre-rama]
+>cambiar a la rama especificada.
+
+git checkout -b [nombre-rama]
+>crea y cambia de rama
+
+git merge [rama]
+> Mezcla la rama actual con [rama]
+
+git branch -d [rama]
+>elimina la rama
+
+git push origin --delete [branchName]
+> Elimina una rama del servidor
+
+git mergetool
+>Herramienta gráfica para resolver conflictos
+
+git branch
+>lista ramas
+
+git branch -v
+> lista ramas mostrando último commit
+
+git branch --merged
+>lista ramas que han sido mezcladas con la actual. Si no tienen un *, pueden borrarse, ya que significa que se han incorporado los
+cambios en la rama actual.
+
+git branch --no-merged
+>lista ramas que no han sido incorporadas a la actual.
 
 
 REMOTE BRANCHES
 
-git fetch origin > Descarga el contenido del servidor
-git push [remote] [branch] >Las ramas no se suben por defecto, has de subirlas explícitamente
-git push [remote] [branch]:[nuevoNombre] >Igual que la de arriba, pero en el servidor se llama a la rama con nuevoNombre en lugar de branch
+git fetch origin
+> Descarga el contenido del servidor
+
+git push [remote] [branch]
+>Las ramas no se suben por defecto, has de subirlas explícitamente
+
+git push [remote] [branch]:[nuevoNombre]
+>Igual que la de arriba, pero en el servidor se llama a la rama con nuevoNombre en lugar de branch
 > Cuando se hace un git fetch que trae consigo nuevas ramas remotas, no se disponen de ellas localmente, solo se dispone de un puntero a la rama remota que no es editable. Para poder trabajar sobre esa rama, es necesario crearla Por ejemplo:
-git fetch origin > Tras ejecutarlo, notamos que se ha creado una rama nueva (rama_nueva)
-git checkout -b rama_nueva origin/rama_nueva > Crea una rama local a partir de la remota
-git merge origin/nueva_rama > Equivalente a la de arriba, pero sin establecer el tracking a la rama
-git push [remotename] :[branch] > elimina una rama remota
-git push [remotename] [localbranch]:[remotebranch] >La rama en el servidor tiene distinto nombre a la local
+
+git fetch origin
+> Tras ejecutarlo, notamos que se ha creado una rama nueva (rama_nueva)
+
+git checkout -b rama_nueva origin/rama_nueva
+> Crea una rama local a partir de la remota
+
+git merge origin/nueva_rama
+> Equivalente a la de arriba, pero sin establecer el tracking a la rama
+
+git push [remotename] :[branch]
+> elimina una rama remota
+
+git push [remotename] [localbranch]:[remotebranch]
+>La rama en el servidor tiene distinto nombre a la local
 
 
-TRACKING BRANCHES
+##TRACKING BRANCHES
 
-git checkout --track origin/rama >Equivalente a -b rama_nueva origin/rama_nueva
-git chekout -b [nuevo_nombre] origin/[rama] > Establece un nombre distinto para la rama local
+git checkout --track origin/rama
+>Equivalente a -b rama_nueva origin/rama_nueva
 
-REBASE
-> Rebase y merge se diferencian en que merge mezcla dos puntos finales de dos snapshots y rebase aplica cada uno de los cambios a la rama en la que se hace el rebase. No lo uses en repos publicos con mas colaboradores, porque todos los demas tendrán que hacer re-merges
+git chekout -b [nuevo_nombre] origin/[rama]
+> Establece un nombre distinto para la rama local
+
+##REBASE
+
+Rebase y merge se diferencian en que merge mezcla dos puntos finales de dos snapshots y rebase aplica cada uno de los cambios a la rama en la que se hace el rebase. No lo uses en repos publicos con mas colaboradores, porque todos los demas tendrán que hacer re-merges
+
 git checkout [una rama]
-git rebase master > aplica todos los cambios de [una rama] a master
+
+git rebase master
+> aplica todos los cambios de [una rama] a master
+
 git merge master >hay que hacer un merge de tipo fast forward
 > Tenemos 3 ramas, master, client y server, en server y client tenemos varios commit y queremos mezclar client en master pero dejar server intacta:
-git rebase --onto master server client > adivina los patches del antecesor común de las ramas server y client y aplica los cambios a master.
-git checkout master
-git merge client > fast-forward. Client y master en el mismo snapshot
-> Si se quiere aplicar también los cambios de server, basta con:
-git rebase master server
-git checkout master
-git merge server
-git rebase [basebranch] [topicbranch] > sintaxis de rebase
-git rebase -i > Rebase interactivo
 
-SERVIDOR
+ * git rebase --onto master server client
+ > Adivina los patches del antecesor común de las ramas server y client y aplica los cambios a master.
 
-git instawew > Muestra una interfaz web con los commits
+ * git checkout master
 
-GENERAR UN NÚMERO DE COMPILACIÓN (BUILD NUMBER)
+ * git merge client
+ > Fast-forward. Client y master en el mismo snapshot
 
-git describe master >Solo funciona para tags creadas con -s ó -a
+Si se quiere aplicar también los cambios de server, basta con:
 
-PREPARAR UNA RELEASE
+* git rebase master server
 
-git archive master -- prefix=”project/’ | gzip ] `git describe master`.tar.gz
-git archive master -- prefix=”project/’ --format=zip | `git describe master`.zip
-test/ export-ignore >Al crear el tarball no incluye el directorio test/
+* git checkout master
 
-GENERAR UN CHANGELOG
+* git merge server
 
-git shortlog --no-merges master --not [tag] >Recopila todos los commits desde [tag] y los agrupa por autor
+git rebase [basebranch] [topicbranch]
+> Sintaxis de rebase
 
-RECOMENDACIONES
+git rebase -i
+> Rebase interactivo
+
+##SERVIDOR
+
+git instawew
+> Muestra una interfaz web con los commits
+
+##GENERAR UN NÚMERO DE COMPILACIÓN (BUILD NUMBER)
+
+git describe master
+>Solo funciona para tags creadas con -s ó -a
+
+##PREPARAR UNA RELEASE
+
+git archive master -- prefix=”project/’ | gzip ] "git describe master".tar.gz
+
+git archive master -- prefix=”project/’ --format=zip | "git describe master".zip
+
+test/ export-ignore
+>Al crear el tarball no incluye el directorio test/
+
+##GENERAR UN CHANGELOG
+
+git shortlog --no-merges master --not [tag]
+>Recopila todos los commits desde [tag] y los agrupa por autor
+
+##RECOMENDACIONES
 
 Siempre hay que hacer pull antes de push en caso de que alguien haya subido cambios al servidor. Ejemplo:
+
 User1 clona el repo y hace cambios, realiza un commit
+
 User2 clona el repo, hace cambios, hace commit y sube los cambios con push
-User1 intenta hacer push, pero será rechazado con: ! [rejected] master -] master (non-fast forward). No puede subir los cambios hasta que no mezcle el trabajo que ha subido User2. Así que debe hacer lo siguiente:
+User1 intenta hacer push, pero será rechazado con: ! [rejected] master -] master (non-fast forward). No puede subir los cambios hasta que no mezcle el
+trabajo que ha subido User2. Así que debe hacer lo siguiente:
 git fetch origin
 git merge origin/master
 git push origin master
@@ -345,10 +471,10 @@ git checkout date_test.txt
 cat date_test.txt
 $Date: Tue Apr 21 07:26:52 2009 -0700$
 
-GIT HOOKS
+##GIT HOOKS
 Hay dos tipos, de lado cliente y servidor, se guardan en el directorio .git/hooks. Para activarlos basta con que sean ejecutables.
 
-CONCEPTOS
+##CONCEPTOS
 Fast forward: cuando se hace un merge y el commit de la rama a mezclar esta justo un commit adelantado, simplemente se hace apuntar la rama en la que se iba a mezclar al commit del merge.
 
 GITIGNORE:
@@ -359,31 +485,13 @@ GITIGNORE:
 build/ > ignore all files in the build/ directory
 doc/*.txt > ignore doc/notes.txt, but not doc/server/arch.txt
 
-Derechos de autor y licencia
+##Derechos de autor y licencia
+Obra Derivada de [Mini tutorial y chuleta de comandos git.]( http://elbauldelprogramador.com/articulos/mini-tutorial-y-chuleta-de-comandos-git/)
 
-Copyright (c) 2013  [@MauriceStark](https://github.com/MauriceStark)
+Licencia de Creative Commons
+El Baúl del Programador by Alejandro Alcalde is licensed under a [Creative Commons Reconocimiento-NoComercial-CompartirIgual 3.0 Unported License.]( http://creativecommons.org/licenses/by-nc-sa/3.0/deed.es_ES)
 
-Se autoriza por la presente, de forma gratuita, a cualquier
-persona que haya obtenido una copia de este software y
-archivos asociados de documentación (el "Software"), para tratar en el
-Software sin restricción, incluyendo sin ninguna limitación en lo que concierne
-los derechos para usar, copiar, modificar, fusionar, publicar,
-distribuir, sublicenciar, y / o vender copias de este
-Software, y para permitir a las personas a las que se les proporcione el Software para
-hacer lo mismo, sujeto a las siguientes condiciones:
-
-El aviso de copyright anterior y este aviso de permiso
-tendrá que ser incluido en todas las copias o partes sustanciales de
-este Software.
-
-EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN
-TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO PERO SIN LIMITARSE A GARANTÍAS DE
-MERCANTIBILIDAD, CAPACIDAD DE HACER Y DE NO INFRACCIÓN DE COPYRIGHT. EN NINGÚN
-CASO LOS AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE
-NINGUNA RECLAMACIÓN, DAÑOS U OTRAS RESPONSABILIDADES,
-YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO,
-DERIVADAS DE, OCASIONADAS POR CULPA DE O EN CONEXION CON EL
-SOFTWARE O SU USO U OTRO TIPO DE ACCIONES EN EL SOFTWARE.
+2013  [@MauriceStark](https://github.com/MauriceStark)
 
 ```javascript
 var foo = {};
